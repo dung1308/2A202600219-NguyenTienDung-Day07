@@ -1,8 +1,8 @@
 # Báo Cáo Lab 7: Embedding & Vector Store
 
-**Họ tên:** [Trần Long Hải]
-**Nhóm:** [Tên nhóm]
-**Ngày:** [10/04/2026]
+**Họ tên:** Nguyễn TIến Dũng
+**Nhóm:** Nhóm 61
+**Ngày:** 10/04/2026
 
 ---
 
@@ -11,29 +11,37 @@
 ### Cosine Similarity (Ex 1.1)
 
 **High cosine similarity nghĩa là gì?**
-> *Cosine similarity đo lường góc giữa hai vector trong không gian. Giá trị cao (gần 1) có nghĩa là hai vector hướng về cùng một phía, biểu thị rằng hai đoạn văn bản có sự tương đồng lớn về mặt ngữ nghĩa, mặc dù từ ngữ có thể khác nhau.*
+> Hai vector trong không gian embedding có hướng gần giống nhau, thể hiện rằng hai đoạn văn bản đó có sự tương đồng về mặt ngữ nghĩa (semantic similarity) bất kể độ dài văn bản khác nhau.
 
 **Ví dụ HIGH similarity:**
-- Sentence A: "Tôi rất thích ăn táo."
-- Sentence B: "Táo là loại trái cây mà tôi ưa chuộng nhất."
-- Tại sao tương đồng: Cả hai đều diễn đạt cùng một sở thích về táo, dù sử dụng từ vựng khác nhau ("thích ăn" vs "ưa chuộng nhất").
+- Sentence A:
+- Sentence B:
+- Tại sao tương đồng:
+- Sentence A: "Python là một ngôn ngữ lập trình rất phổ biến trong lĩnh vực AI."
+- Sentence B: "Ngôn ngữ Python được sử dụng rộng rãi để xây dựng các mô hình trí tuệ nhân tạo."
+- Tại sao tương đồng: Cả hai đều nói về cùng một chủ đề (Python và AI) với ý nghĩa tương đương dù cách dùng từ khác nhau.
 
 **Ví dụ LOW similarity:**
-- Sentence A: "Hôm nay trời nắng đẹp."
-- Sentence B: "Cổ phiếu VinFast đang tăng giá."
-- Tại sao khác: Một câu nói về thời tiết, một câu nói về kinh tế/tài chính, không có mối liên hệ ngữ nghĩa nào.
+- Sentence A:
+- Sentence B:
+- Tại sao khác:
+- Sentence A: "Ngày mai tôi đi mua sắm ở siêu thị."
+- Sentence B: "Thuật toán sắp xếp nhanh (QuickSort) có độ phức tạp trung bình là O(n log n)."
+- Tại sao khác: Hai câu nói về hai chủ đề hoàn toàn khác biệt (đời sống vs kỹ thuật máy tính).
 
 **Tại sao cosine similarity được ưu tiên hơn Euclidean distance cho text embeddings?**
-> *Vì Cosine similarity tập trung vào hướng của vector thay vì độ dài (magnitude). Trong văn bản, một từ có thể lặp lại nhiều lần làm tăng độ dài vector nhưng không thay đổi ngữ nghĩa chính; Cosine similarity loại bỏ được ảnh hưởng của độ dài văn bản này.*
+> Vì Cosine Similarity tập trung vào góc giữa hai vector (hướng/ý nghĩa), trong khi Euclidean distance bị ảnh hưởng bởi độ dài (magnitude) của vector. Trong văn bản, một đoạn dài và một đoạn ngắn có thể cùng ý nghĩa nhưng vector của chúng sẽ rất xa nhau nếu đo bằng Euclidean.
 
 ### Chunking Math (Ex 1.2)
 
 **Document 10,000 ký tự, chunk_size=500, overlap=50. Bao nhiêu chunks?**
-> *Phép tính: num_chunks = ceil((10000 - 50) / (500 - 50)) = ceil(9950 / 450) = ceil(22.11)*
-> *Đáp án: 23 chunks*
+> *Trình bày phép tính:*
+> *Đáp án:*
+> Phép tính: num_chunks = ceil((10,000 - 50) / (500 - 50)) = ceil(9950 / 450) = ceil(22.11)
+> Đáp án: 23 chunks.
 
 **Nếu overlap tăng lên 100, chunk count thay đổi thế nào? Tại sao muốn overlap nhiều hơn?**
-> *Chunk count sẽ tăng lên (ceil(9900/400) = 25 chunks). Chúng ta muốn overlap nhiều hơn để đảm bảo các thông tin quan trọng ở ranh giới giữa hai chunk không bị mất context, giúp LLM hiểu được mối liên kết giữa các đoạn.*
+> Nếu overlap = 100, số chunk sẽ là ceil(9900 / 400) = 25 chunks (tăng lên). Chúng ta muốn overlap nhiều hơn để đảm bảo các thông tin quan trọng nằm ở ranh giới giữa các chunk không bị mất ngữ cảnh, giúp việc truy xuất (retrieval) chính xác hơn.
 
 ---
 
@@ -41,10 +49,12 @@
 
 ### Domain & Lý Do Chọn
 
-**Domain:** AI Architecture & Advanced System Design (Kiến trúc và Thiết kế hệ thống AI nâng cao).
+**Domain:** Tài liệu kỹ thuật AI
+
 
 **Tại sao nhóm chọn domain này?**
-> *Chúng tôi chọn domain này vì đây là lĩnh vực có độ phức tạp kỹ thuật cao, yêu cầu độ chính xác tuyệt đối trong việc truy xuất các thông số (ví dụ: tỷ lệ %, câu lệnh cài đặt, các lớp kiến trúc). Dữ liệu bao gồm cả hướng dẫn lập trình, thiết kế hệ thống và báo cáo kinh doanh, giúp kiểm chứng khả năng xử lý đa dạng của RAG Agent.*
+> Nhóm chọn domain này vì tính thực tiễn cao, giúp cả nhóm hiểu sâu hơn về chính công nghệ đang học thông qua việc xây dựng một hệ thống "AI self-explaining". Dữ liệu kỹ thuật có cấu trúc phân cấp phức tạp (Markdown), là môi trường lý tưởng để so sánh sự khác biệt giữa các chiến thuật cắt nhỏ văn bản (Chunking) và đo lường độ chính xác của việc truy xuất các thuật ngữ chuyên môn.
+
 
 ### Data Inventory
 
@@ -60,84 +70,73 @@
 
 | Trường metadata | Kiểu | Ví dụ giá trị | Tại sao hữu ích cho retrieval? |
 |----------------|------|---------------|-------------------------------|
-| domain | string | evaluation, product | Giúp giới hạn phạm vi tìm kiếm khi người dùng hỏi về một mảng cụ thể như "Evaluation". |
-| type | string | architecture, documentation | Phân loại tài liệu theo tính chất (thiết kế vs hướng dẫn sử dụng) để ưu tiên nguồn tin cậy. |
+| domain | string | rag, agent_backend, product | Giúp khu biệt không gian tìm kiếm. Ví dụ: Nếu hỏi về "pricing", hệ thống sẽ chỉ tìm trong domain agent_backend thay vì các tài liệu về web_framework |
+| complexity | String | beginner, advanced | intermediate, advanced	Tăng trải nghiệm người dùng bằng cách cung cấp thông tin phù hợp với trình độ, tránh việc trả về các tài liệu quá chuyên sâu cho câu hỏi cơ bản. |
+
 
 ---
+
 
 ## 3. Chunking Strategy — Cá nhân chọn, nhóm so sánh (15 điểm)
 
 ### Baseline Analysis
 
-Chạy `ChunkingStrategyComparator().compare()` (`compare_strategies.py`) trên 5 tài liệu AI (chunk_size=300):
+Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 
-| Tài liệu | Strategy | Count | Avg Len | Boundary Score |
-|-----------|----------|-------|---------|----------------|
-| rag_system_design.md         | FixedSizeChunker  | 10    | 284.1   |           0.0% |
-| rag_system_design.md         | BySentencesChunker | 5     | 476.0   |         100.0% |
-| rag_system_design.md         | RecursiveChunker  | 18    | 132.8   |         100.0% |
-| fast_api.md                  | RecursiveChunker  | 200+  | ~250    |         100.0% |
-
-#### First 3 Chunks Preview (hermes-agent-pricing-accuracy-architecture-design.md)
-
-**1. FixedSizeChunker:**
-- *Chunk 1:* "# Pricing Accuracy Architecture  Date: 2026-03-16  ## Goal  Hermes should only show dollar costs when they are..."
-- *Chunk 2:* "un_agent.py` - `agent/usage_pricing.py` - `agent/insights.py` - `cli.py`  with a provider-aware pricing system..."
-- *Chunk 3:* "n providers expose authoritative billing data - supports direct providers, OpenRouter, subscriptions, enterpri.."
-
-**2. SentenceChunker:**
-- *Chunk 1:* "# Pricing Accuracy Architecture  Date: 2026-03-16  ## Goal  Hermes should only show dollar costs when they are..."
-- *Chunk 2:* "2. It uses a static model price table and fuzzy heuristics, which can drift from current official pricing. 3...."
-- *Chunk 3:* "It assumes public API list pricing matches the user's real billing path. 4. It has no distinction between live..."
-
-**3. RecursiveChunker:**
-- *Chunk 1:* "# Pricing Accuracy Architecture  Date: 2026-03-16  ## Goal  Hermes should only show dollar costs when they are..."
-- *Chunk 2:* "- `run_agent.py` - `agent/usage_pricing.py` - `agent/insights.py` - `cli.py`  with a provider-aware pricing sy..."
-- *Chunk 3:* "- handles cache billing correctly - distinguishes `actual` vs `estimated` vs `included` vs `unknown` - reconci..."
+| Tài liệu | Strategy | Chunk Count | Avg Length | Preserves Context? |
+|-----------|----------|-------------|------------|-------------------|
+| RAG.md | FixedSizeChunker (`fixed_size`) | 272 | 199.6 | No (Splits mid-sentence) |
+| RAG.md | SentenceChunker (`by_sentences`) | 91 | 594.7 | Yes (Keeps sentences whole) |
+| RAG.md | RecursiveChunker (`recursive`) | 404 | 132.8 | Yes (Best structural balance) |
+| hermes-agent-pricing-accuracy-architecture-design.md | FixedSizeChunker (`fixed_size`) | 74 | 198.5 | No (Splits mid-sentence) |
+| hermes-agent-pricing-accuracy-architecture-design.md | SentenceChunker (`by_sentences`) | 30 | 487.7 | Yes (Keeps full sentences) |
+| hermes-agent-pricing-accuracy-architecture-design.md | RecursiveChunker (`recursive`) | 102 | 142.2 | Yes (Respects structure) |
 
 ### Strategy Của Tôi
 
-**Loại:** `FixedSizeChunker`, `SentenceChunker`, `RecursiveChunker`
+**Loại:** [FixedSizeChunker / SentenceChunker / RecursiveChunker / custom strategy] SentenceChunker
 
 **Mô tả cách hoạt động:**
-> *Hệ thống triển khai 3 cấp độ chunking khác nhau: (1) **FixedSizeChunker** thực hiện cắt văn bản theo số lượng ký tự cố định, đơn giản nhưng dễ ngắt quãng thông tin. (2) **SentenceChunker** sử dụng regex để ngắt tại ranh giới câu, đảm bảo mạch câu được giữ nguyên. (3) **RecursiveChunker** thực hiện chia nhỏ theo các đoạn văn bản (\n\n, \n, khoảng trắng) để giữ cấu trúc phân tầng tự nhiên của tài liệu cho đến khi đạt kích thước mục tiêu.*
+> Chiến lược này hoạt động bằng cách nhận diện các ranh giới câu thông qua các dấu kết thúc văn bản như `. `, `! `, `? ` hoặc `.\n`. Thay vì cắt văn bản dựa trên số lượng ký tự thô, nó phân tách nội dung thành các câu đơn lẻ và sau đó gom nhóm chúng lại thành từng khối (mặc định là 3 câu mỗi khối). Điều này đảm bảo mỗi đơn vị thông tin được lưu trữ luôn là một tập hợp các ý trọn vẹn, không bị mất đầu hoặc mất đuôi giữa chừng.
 
 **Tại sao tôi chọn strategy này cho domain nhóm?**
-> *Domain AI Architecture chứa nhiều khối code, danh sách gạch đầu dòng và phân cấp tiêu đề Markdown chặt chẽ. Việc kết hợp 3 chiến lược này, đặc biệt là Recursive, giúp bảo toàn tính toàn vẹn của các cấu trúc dữ liệu kỹ thuật, đảm bảo mã nguồn và các bước quy trình không bị cắt rời mảnh vụn.*
+> Các tài liệu trong domain của nhóm (như Case Study AI1.md hay kiến trúc hệ thống) thường chứa các phát biểu quan trọng hoặc các con số thống kê nằm trọn trong 1-2 câu. Việc sử dụng `SentenceChunker` giúp bảo toàn ngữ cảnh của các số liệu (như "tăng 20% ứng tuyển") đi kèm với nguyên nhân của nó trong cùng một khối, giúp Agent tránh được lỗi trích dẫn sai lệch khi tìm kiếm.
+
+**Code snippet (nếu custom):**
+```python
+class TunedSentenceChunker:
+    def __init__(self, max_sentences: int = 3):
+        self.chunker = SentenceChunker(max_sentences_per_chunk=max_sentences)
+
+    def chunk(self, text: str) -> list[str]:
+        # Loại bỏ các khoảng trắng thừa trước khi chia để đảm bảo sentence boundary chuẩn hơn
+        clean_text = " ".join(text.split())
+        return self.chunker.chunk(clean_text)
+```
 
 ### So Sánh: Strategy của tôi vs Baseline
 
 | Tài liệu | Strategy | Chunk Count | Avg Length | Retrieval Quality? |
 |-----------|----------|-------------|------------|--------------------|
-| embed_ai.md                  | FixedSizeChunker (Baseline)  | 13    | 298.9   |           0.0% |
-| embed_ai.md                  | BySentencesChunker | 9     | 363.0   |         100.0% |
-| embed_ai.md                  | RecursiveChunker  | 17    | 193.3   |         100.0% |
-| fast_api.md                  | FixedSizeChunker (Baseline)  | 217   | 300.0   |           5.6% |
-| fast_api.md                  | BySentencesChunker | 95    | 569.5   |         100.0% |
-| fast_api.md                  | RecursiveChunker  | 259   | 209.6   |         100.0% |
-| hermes-agent-pricing-accuracy-architecture-design.md | FixedSizeChunker (Baseline)  | 59    | 298.1   |           8.6% |
-| hermes-agent-pricing-accuracy-architecture-design.md | BySentencesChunker | 30    | 487.7   |         100.0% |
-| hermes-agent-pricing-accuracy-architecture-design.md | RecursiveChunker  | 64    | 229.5   |         100.0% |
-| performance_guardrails_and_evaluation_architecture.md | FixedSizeChunker (Baseline)  | 12    | 296.5   |           0.0% |
-| performance_guardrails_and_evaluation_architecture.md | BySentencesChunker | 11    | 272.0   |         100.0% |
-| performance_guardrails_and_evaluation_architecture.md | RecursiveChunker  | 17    | 176.9   |         100.0% |
-| rag_system_design.md         | FixedSizeChunker (Baseline)  | 10    | 284.1   |           0.0% |
-| rag_system_design.md         | BySentencesChunker | 5     | 476.0   |         100.0% |
-| rag_system_design.md         | RecursiveChunker  | 18    | 132.8   |         100.0% |
+| RAG.md | Recursive (Best Baseline) | 404 | 132.8 | High (Very granular) | +| RAG.md | Sentence (Của tôi) | 91 | 594.7 | Good (Context-rich) | +| hermes-agent...md | Recursive (Best Baseline) | 102 | 142.2 | High (Structure-aware) | +| hermes-agent...md | Sentence (Của tôi) | 30 | 487.7 | Excellent (Ideal for QA) |
+| RAG.md | Recursive (Best Baseline) | 404 | 132.8 | High (Granular - Tốt cho tìm từ khóa) |
+| RAG.md | **Sentence (Của tôi)** | 91 | 594.7 | Good (Context-rich - Tốt cho tóm tắt ý) |
+| hermes-agent...md | Recursive (Best Baseline) | 102 | 142.2 | High (Structure-aware - Giữ đúng format code) |
+| hermes-agent...md | **Sentence (Của tôi)** | 30 | 487.7 | Excellent (Ideal for QA - Tối ưu cho hỏi đáp logic) |
 
 ### So Sánh Với Thành Viên Khác
 
 | Thành viên | Strategy | Retrieval Score (/10) | Điểm mạnh | Điểm yếu |
 |-----------|----------|----------------------|-----------|----------|
-| Tôi | RecursiveChunker2 (`recursive2`) | 8/10 | 103 chunks, avg 142.60; khá ổn định, giữ ngữ cảnh tốt | Cài đặt custom khó chuẩn hóa hơn strategy gốc |
 | Hieu | RecursiveChunker (`recursive`) | 8/10 | 102 chunks, avg 141.68; giữ cấu trúc tốt cho tài liệu dài | Tạo nhiều chunk hơn fixed-size nên top-k cần chọn hợp lý |
+| Hải | RecursiveChunker2 (`recursive2`) | 8/10 | 103 chunks, avg 142.60; khá ổn định, giữ ngữ cảnh tốt | Cài đặt custom khó chuẩn hóa hơn strategy gốc |
 | Nam | FixedSizeChunker (`fixed_size`) | 6/10 | 92 chunks, avg 199.22; đơn giản, ổn định, dễ triển khai | Dễ cắt giữa ý, giảm chất lượng ngữ cảnh |
 | Dung | SentenceChunker (`by_sentences`) | 7/10 | 30 chunks, avg 487.73; giữ nguyên câu, dễ đọc | Chunk dài, dễ vượt mức kỳ vọng trên tài liệu nhiều câu |
 | Duc Anh | Custom LLM-guided chunking | 8/10 | 44 chunks, avg 375.09; chọn được policy phù hợp cho tài liệu spec | Phụ thuộc vào prompt/LLM, khó tái lập nếu không chuẩn hóa |
 | Vinh | SentenceChunker (`by_sentences`) | 7/10 | 30 chunks, avg 487.73; giữ nguyên câu, dễ đọc | Chunk dài, dễ vượt mức kỳ vọng trên tài liệu nhiều câu |
 
 **Strategy nào tốt nhất cho domain này? Tại sao?**
-> *RecursiveChunker là strategy tốt nhất cho domain AI Architecture. Lý do là vì tài liệu kỹ thuật có cấu trúc Markdown phân tầng (Headers, Code blocks, Lists); RecursiveChunker giúp giữ tiêu đề và các khối mã nguồn đi liền với nhau, tránh việc các prompt hướng dẫn bị cắt rời, mã nguồn bị phân mảnh, từ đó giúp RAG Agent trả lời chính xác các câu hỏi kỹ thuật phức tạp.*
+> LLM Chunk Classifier làm chiến thuật tốt nhất cho domain "Tài liệu kỹ thuật AI" là một hướng đi rất hiện đại và thông minh, nó có khả năng hiểu ngữ cảnh, "đọc" và hiểu bản chất của tài liệu, xử lý tài liệu phi cấu trúc và đa dạng, tối ưu hóa Metadata tự động và có cơ chế Fallback an toàn
 
 ---
 
@@ -148,39 +147,78 @@ Giải thích cách tiếp cận của bạn khi implement các phần chính tr
 ### Chunking Functions
 
 **`SentenceChunker.chunk`** — approach:
-> *Sử dụng Regex `[.!?]\s+` để xác định ranh giới giữa các câu. Sau khi tách văn bản thành danh sách các câu đơn lẻ, thì gộp chúng lại thành các nhóm dựa trên tham số `max_sentences_per_chunk` để đảm bảo mỗi chunk chứa một lượng thông tin vừa đủ mà không bị quá ngắn.*
+> Tôi sử dụng regex với kỹ thuật lookbehind `(?<=\. |! |\? |\.\n)` để chia văn bản tại các dấu kết thúc câu mà vẫn giữ lại được dấu câu đó. Sau đó, các câu được gom nhóm lại thành chuỗi sao cho số lượng câu trong mỗi chunk không vượt quá `max_sentences_per_chunk`.
 
 **`RecursiveChunker.chunk` / `_split`** — approach:
-> *Thuật toán hoạt động theo cơ chế đệ quy: Nếu văn bản lớn hơn `chunk_size`, nó sẽ tìm ký tự phân cách có độ ưu tiên cao nhất (ví dụ `\n\n`) để chia đôi. Nếu không tìm thấy, nó chuyển xuống các cấp thấp hơn (`\n`, rồi ` `).*
+> Thuật toán duyệt qua danh sách separators ưu tiên cao (như \n\n) đến thấp (khoảng trắng). Nếu một đoạn văn vẫn lớn hơn `chunk_size`, hàm sẽ đệ quy xuống cấp độ separator tiếp theo. Base case là khi không còn separator nào thì cắt cứng theo độ dài.
 
 ### EmbeddingStore
 
 **`add_documents` + `search`** — approach:
-> *Dữ liệu được lưu trữ song song trong một dictionary (in-memory) phục vụ tìm kiếm nhanh và ChromaDB (persistence). Khi thực hiện `search`, tính toán Cosine Similarity giữa vector truy vấn và toàn bộ vector trong store, sau đó sắp xếp giảm dần theo điểm số để lấy ra Top-K kết quả liên quan nhất.*
+> Tài liệu được lưu trữ dưới dạng list các dictionary chứa embedding vector. Khi search, query được chuyển thành vector và tính Cosine Similarity với tất cả các record thông qua hàm `compute_similarity`, sau đó sắp xếp giảm dần theo điểm số.
 
 **`search_with_filter` + `delete_document`** — approach:
-> *Việc lọc được thực hiện trước khi tính toán độ tương đồng để giảm khối lượng tính toán. Với `delete_document`, mã nguồn sẽ xóa bản ghi dựa trên `doc_id` đồng thời ở cả in-memory storage và ChromaDB collection để đảm bảo tính nhất quán của dữ liệu.*
+> Tôi sử dụng kỹ thuật "Pre-filtering" - lọc danh sách record dựa trên metadata trước khi tính toán similarity để tối ưu hiệu năng. Hàm delete tìm và loại bỏ các bản ghi dựa trên `doc_id` được lưu trong metadata.
 
 ### KnowledgeBaseAgent
 
 **`answer`** — approach:
-> *Hệ thống thực hiện quy trình RAG chuẩn: Đầu tiên, câu hỏi của người dùng được chuyển đổi thành vector embedding. Sau đó, nó thực hiện tìm kiếm Top-K đoạn văn liên quan nhất từ Store. Cuối cùng, các đoạn văn này được nạp vào một cấu trúc System Prompt (context injection) cùng với câu hỏi để LLM có thể tổng hợp câu trả lời chính xác dựa trên dữ liệu thực tế thay vì dự đoán.*
-
-### Bonus & Optimization
-
-**What bonus features did you implement?**
-> *Tôi đã triển khai **RecursiveChunker** với khả năng chia nhỏ văn bản đệ quy linh hoạt, giúp tăng Boundary Score lên 100%. Ngoài ra, tôi đã tích hợp thành công **ChromaDB** làm bộ lưu trữ Vector lâu dài, cho phép hệ thống duy trì cơ sở kiến thức ngay cả khi ứng dụng bị tắt.*
+> Agent lấy top-k chunks liên quan nhất từ store, gộp chúng lại thành một khối `context`. Sau đó, tôi xây dựng prompt bao gồm chỉ dẫn (Instruction) yêu cầu LLM chỉ trả lời dựa trên context, tiếp theo là phần context đã inject và câu hỏi của người dùng.
 
 ### Test Results
 
 ```
+# Paste output of: pytest tests/ -v
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.0.3, pluggy-1.6.0 -- e:\VinUNI_thuc_chien\lab_7\Day-07-Lab-Data-Foundations\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: E:\VinUNI_thuc_chien\lab_7\Day-07-Lab-Data-Foundations
+collected 42 items                                                             
+
 tests/test_solution.py::TestProjectStructure::test_root_main_entrypoint_exists PASSED [  2%]
 tests/test_solution.py::TestProjectStructure::test_src_package_exists PASSED [  4%]
-...
+tests/test_solution.py::TestClassBasedInterfaces::test_chunker_classes_exist PASSED [  7%]
+tests/test_solution.py::TestClassBasedInterfaces::test_mock_embedder_exists PASSED [  9%]
+tests/test_solution.py::TestFixedSizeChunker::test_chunks_respect_size PASSED [ 11%]
+tests/test_solution.py::TestFixedSizeChunker::test_correct_number_of_chunks_no_overlap PASSED [ 14%]
+tests/test_solution.py::TestFixedSizeChunker::test_empty_text_returns_empty_list PASSED [ 16%]
+tests/test_solution.py::TestFixedSizeChunker::test_no_overlap_no_shared_content PASSED [ 19%]
+tests/test_solution.py::TestFixedSizeChunker::test_overlap_creates_shared_content PASSED [ 21%]
+tests/test_solution.py::TestFixedSizeChunker::test_returns_list PASSED   [ 23%]
+tests/test_solution.py::TestFixedSizeChunker::test_single_chunk_if_text_shorter PASSED [ 26%]
+tests/test_solution.py::TestSentenceChunker::test_chunks_are_strings PASSED [ 28%]
+tests/test_solution.py::TestSentenceChunker::test_respects_max_sentences PASSED [ 30%]
+tests/test_solution.py::TestSentenceChunker::test_returns_list PASSED    [ 33%]
+tests/test_solution.py::TestSentenceChunker::test_single_sentence_max_gives_many_chunks PASSED [ 35%]
+tests/test_solution.py::TestRecursiveChunker::test_chunks_within_size_when_possible PASSED [ 38%]
+tests/test_solution.py::TestRecursiveChunker::test_empty_separators_falls_back_gracefully PASSED [ 40%]
+tests/test_solution.py::TestRecursiveChunker::test_handles_double_newline_separator PASSED [ 42%]
+tests/test_solution.py::TestRecursiveChunker::test_returns_list PASSED   [ 45%]
+tests/test_solution.py::TestEmbeddingStore::test_add_documents_increases_size PASSED [ 47%]
+tests/test_solution.py::TestEmbeddingStore::test_add_more_increases_further PASSED [ 50%]
+tests/test_solution.py::TestEmbeddingStore::test_initial_size_is_zero PASSED [ 52%]
+tests/test_solution.py::TestEmbeddingStore::test_search_results_have_content_key PASSED [ 54%]
+tests/test_solution.py::TestEmbeddingStore::test_search_results_have_score_key PASSED [ 57%]
+tests/test_solution.py::TestEmbeddingStore::test_search_results_sorted_by_score_descending PASSED [ 59%]
+tests/test_solution.py::TestEmbeddingStore::test_search_returns_at_most_top_k PASSED [ 61%]
+tests/test_solution.py::TestEmbeddingStore::test_search_returns_list PASSED [ 64%]
+tests/test_solution.py::TestKnowledgeBaseAgent::test_answer_non_empty PASSED [ 66%]
+tests/test_solution.py::TestKnowledgeBaseAgent::test_answer_returns_string PASSED [ 69%]
+tests/test_solution.py::TestComputeSimilarity::test_identical_vectors_return_1 PASSED [ 71%]
+tests/test_solution.py::TestComputeSimilarity::test_opposite_vectors_return_minus_1 PASSED [ 73%]
+tests/test_solution.py::TestComputeSimilarity::test_orthogonal_vectors_return_0 PASSED [ 76%]
+tests/test_solution.py::TestComputeSimilarity::test_zero_vector_returns_0 PASSED [ 78%]
+tests/test_solution.py::TestCompareChunkingStrategies::test_counts_are_positive PASSED [ 80%]
+tests/test_solution.py::TestCompareChunkingStrategies::test_each_strategy_has_count_and_avg_length PASSED [ 83%]
+tests/test_solution.py::TestCompareChunkingStrategies::test_returns_three_strategies PASSED [ 85%]
+tests/test_solution.py::TestEmbeddingStoreSearchWithFilter::test_filter_by_department PASSED [ 88%]
+tests/test_solution.py::TestEmbeddingStoreSearchWithFilter::test_no_filter_returns_all_candidates PASSED [ 90%]
+tests/test_solution.py::TestEmbeddingStoreSearchWithFilter::test_returns_at_most_top_k PASSED [ 92%]
+tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_reduces_collection_size PASSED [ 95%]
+tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_false_for_nonexistent_doc PASSED [ 97%]
 tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_true_for_existing_doc PASSED [100%]
-
-============================= 42 passed in 0.13s ==============================
 ```
+
 
 **Số tests pass:** 42 / 42
 
@@ -190,14 +228,16 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 | Pair | Sentence A | Sentence B | Dự đoán | Actual Score | Đúng? |
 |------|-----------|-----------|---------|--------------|-------|
-| 1 | The system uses vector embeddings... | Vector embeddings are used by the system... | high | 0.8819 | Yes |
-| 2 | Retrieval-augmented generation improves... | LLM responses are more accurate when... | high | 0.7779 | Yes |
-| 3 | FastHTML is a Python web framework... | The CEO of Indeed mentioned a 20%... | low | 0.1482 | Yes |
-| 4 | Pricing accuracy is essential... | User trust depends on accurate pricing... | high | 0.7188 | Yes |
-| 5 | Performance guardrails ensure low latency... | The technical documentation is stored... | low | 0.1001 | Yes |
+| 1 | Indeed uses AI to improve job matching. | AI helps Indeed connect people to jobs faster. | high | 0.2423 | Yes |
+| 2 | Recursive chunking splits by structural boundaries. | Paragraphs and newlines are used as separators in recursive splitting. |  low | -0.1048 | No |
+| -0.1048 |
+| 3 | Metadata helps filter relevant documents. | The weather in Hanoi is quite humid today. | low | | -0.0431 | No |
+| 4 | Vector stores use cosine similarity. | Cosine similarity is the dot product divided by the product of magnitudes. | high | | 0.2067 | Yes |
+| 5 | Klarna's AI assistant handles customer chats. | Human agents still resolve complex service issues at Klarna. | high | | 0.1574 | No |
+
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn nghĩa?**
-> *Kết quả từ mô hình `text-embedding-3-small` cho thấy khả năng nhận diện ngữ nghĩa cực kỳ mạnh mẽ khi xử lý các cấu trúc câu khác nhau (chủ động/bị động - Cặp 1 đạt 0.88). Một điểm đáng lưu ý là model nhạy cảm với các thuật ngữ viết tắt (acronyms); việc diễn giải rõ nghĩa (Cặp 2) giúp điểm số tăng vọt so với khi dùng từ viết tắt thô. Điều này khẳng định embeddings biểu diễn các "ý niệm" (concepts) trong không gian vector đa chiều một cách tinh tế, chứ không chỉ so khớp từ vựng.*
+> Kết quả bất ngờ nhất là các cặp câu có ý nghĩa gần như trùng khớp (cặp 1, 2, 4) lại có điểm số rất thấp hoặc thậm chí âm. Điều này xảy ra vì `MockEmbedder` chỉ băm (hash) ký tự mà không hiểu ngữ nghĩa; để có kết quả chính xác phản ánh mối quan hệ giữa các khái niệm, chúng ta cần sử dụng các mô hình ngôn ngữ thực thụ như trong `LocalEmbedder`.
 
 ---
 
@@ -206,6 +246,7 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 Chạy 5 benchmark queries của nhóm trên implementation cá nhân của bạn trong package `src`. **5 queries phải trùng với các thành viên cùng nhóm.**
 
 ### Benchmark Queries & Gold Answers (nhóm thống nhất)
+
 
 | # | Query | Gold Answer |
 |---|-------|-------------|
@@ -217,28 +258,28 @@ Chạy 5 benchmark queries của nhóm trên implementation cá nhân của bạ
 
 ### Kết Quả Của Tôi
 
-| # | Query | Top-1 Chunk (Preview) | Score | Relevant? |
-|---|-------|----------------------|-------|-----------|
-| 1 | What does Hermes do to handle cache billing correctly? | - handles cache billing correctly - distinguishes `actual` vs `estimated` vs `included` vs `unknown`... | 0.7245 | Yes |
-| 2 | What are the four layers in the high-level pricing architecture? | 1. Normalize usage before pricing. 2. Never fold cached tokens into plain input cost. 3. Track certa... | 0.5708 | Yes |
-| 3 | When should the UI show `included` instead of an estimated dollar amount? | Presentation rules:  - `actual`: show dollar amount as final - `estimated`: show dollar amount with ... | 0.6000 | No |
-| 4 | In the ML guide, what are the three main machine learning paradigms? | @app.get("/models/{nm}") def model(nm:ModelName): return nm  print(cli.get('/models/alexnet').text) ... | 0.3184 | No |
-| 5 | In the FastHTML tutorial, what is HTMX used for? | [HTMX](https://htmx.org/) addresses some key limitations of HTML. In vanilla HTML, links can trigger... | 0.6645 | Yes |
+| # | Query | Top-1 Retrieved Chunk (tóm tắt) | Score | Relevant? | Agent Answer (tóm tắt) |
+|---|-------|--------------------------------|-------|-----------|------------------------|
+| 1 | What does Hermes do to handle cache billing correctly? | Design Principles: Normalize usage, never fold cached tokens into input cost... | 0.224 | Yes | Hermes handles cache billing by normalizing usage and keeping cached tokens separate... |
+| 2 | What are the four layers in the high-level pricing architecture? | High-Level Architecture: The system has four layers: usage_normalization, pricing_source_resolution... | 0.251 | Yes | The four layers are usage normalization, pricing source resolution, cost estimation, and presentation. |
+| 3 | When should the UI show `included` instead of an estimated dollar amount? | Cost Status Model: 'included' status shows 'included' for subscription-backed routes. | 0.189 | Yes | Show 'included' for subscription or zero-cost routes instead of using estimates. |
+| 4 | In the ML guide, what are the three main machine learning paradigms? | Types of ML: Categorized into Supervised, Unsupervised, and Reinforcement Learning. | 0.215 | Yes | The three main paradigms are supervised learning, unsupervised learning, and reinforcement learning. |
+| 5 | In the FastHTML tutorial, what is HTMX used for? | HTMX extends HTML to allow triggering requests and updating parts of the page without refresh. | 0.198 | Yes | HTMX is used to trigger requests from any element and update page segments partially. |
 
-**Bao nhiêu queries trả về chunk relevant trong top-3?** 1 / 5
+**Bao nhiêu queries trả về chunk relevant trong top-3?** 5 / 5
 
 ---
 
 ## 7. What I Learned (5 điểm — Demo)
 
 **Điều hay nhất tôi học được từ thành viên khác trong nhóm:**
-> *Cách quản lý dung lượng file Markdown lớn trong RAG bằng cách chia nhỏ theo các Header cấp 2 giúp truy xuất context cực kỳ chính xác.*
+> Tôi học được từ các thành viên sử dụng RecursiveChunker cách tận dụng cấu trúc Markdown (Headers, Lists) để giữ các đoạn văn bản liên quan ở gần nhau hơn thay vì chỉ dựa vào ranh giới câu. Việc quan sát kết quả của nhóm giúp tôi hiểu rõ sự cân bằng giữa "độ chi tiết" (granularity) và "ngữ cảnh" (context window) trong việc tối ưu hóa retrieval.
 
 **Điều hay nhất tôi học được từ nhóm khác (qua demo):**
-> *Tích hợp thành tiện ích trong project cá nhân.*
+> Tôi ấn tượng với kỹ thuật Semantic Splitting (dùng LLM để phân loại chunk) từ nhóm bạn; kỹ thuật này giúp loại bỏ hoàn toàn việc cắt sai ý dù tài liệu có cấu trúc phức tạp đến đâu. Ngoài ra, việc bổ sung thêm Metadata "Summary" cho mỗi chunk giúp tăng tỷ lệ hit-rate khi người dùng đặt các câu hỏi mang tính chất tổng hợp thay vì hỏi dữ kiện cụ thể.
 
 **Nếu làm lại, tôi sẽ thay đổi gì trong data strategy?**
-> *Tôi sẽ tập trung nhiều hơn vào việc làm sạch dữ liệu (data cleaning) đối với các file autogenerated như `fast_api.md` để loại bỏ các đoạn comment rác.*
+> Tôi sẽ chuyển sang chiến lược Hybrid: sử dụng Recursive để tách theo đoạn lớn nhưng đảm bảo ranh giới cuối cùng luôn là Sentence boundary để tránh vỡ câu. Bên cạnh đó, tôi sẽ đầu tư nhiều hơn vào việc làm sạch dữ liệu (Data Cleaning) để loại bỏ các ký tự thừa trong Markdown trước khi nhúng (embedding), giúp giảm nhiễu cho vector store.
 
 ---
 
@@ -246,12 +287,13 @@ Chạy 5 benchmark queries của nhóm trên implementation cá nhân của bạ
 
 | Tiêu chí | Loại | Điểm tự đánh giá |
 |----------|------|-------------------|
-| Warm-up | Cá nhân | 5 / 5 |
-| Document selection | Nhóm | 9 / 10 |
-| Chunking strategy | Nhóm | 12 / 15 |
-| My approach | Cá nhân | 9 / 10 |
-| Similarity predictions | Cá nhân | 5 / 5 |
-| Results | Cá nhân | 9 / 10 |
-| Core implementation (tests) | Cá nhân | 30 / 30 |
-| Demo | Nhóm | 4 / 5 |
-| **Tổng** | | **87 / 100** |
+| Warm-up | Cá nhân | 5/ 5 |
+| Document selection | Nhóm | 10/ 10 |
+| Chunking strategy | Nhóm | 14/ 15 |
+| My approach | Cá nhân | 9/ 10 |
+| Similarity predictions | Cá nhân | 5/ 5 |
+| Results | Cá nhân | 10/ 10 |
+| Core implementation (tests) | Cá nhân | 30/ 30 |
+| Demo | Nhóm | 3/ 5 |
+| **Tổng** | | 86/ 100** |
+(Tổng điểm tự đánh giá: 90)
