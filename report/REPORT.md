@@ -100,7 +100,7 @@ Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
 > Chiến lược này hoạt động bằng cách nhận diện các ranh giới câu thông qua các dấu kết thúc văn bản như `. `, `! `, `? ` hoặc `.\n`. Thay vì cắt văn bản dựa trên số lượng ký tự thô, nó phân tách nội dung thành các câu đơn lẻ và sau đó gom nhóm chúng lại thành từng khối (mặc định là 3 câu mỗi khối). Điều này đảm bảo mỗi đơn vị thông tin được lưu trữ luôn là một tập hợp các ý trọn vẹn, không bị mất đầu hoặc mất đuôi giữa chừng.
 
 **Tại sao tôi chọn strategy này cho domain nhóm?**
-> Các tài liệu trong domain của nhóm (như Case Study AI1.md hay kiến trúc hệ thống) thường chứa các phát biểu quan trọng hoặc các con số thống kê nằm trọn trong 1-2 câu. Việc sử dụng `SentenceChunker` giúp bảo toàn ngữ cảnh của các số liệu (như "tăng 20% ứng tuyển") đi kèm với nguyên nhân của nó trong cùng một khối, giúp Agent tránh được lỗi trích dẫn sai lệch khi tìm kiếm.
+> Các tài liệu trong domain của nhóm (như Case Study trong data hay kiến trúc hệ thống) thường chứa các phát biểu quan trọng hoặc các con số thống kê nằm trọn trong 1-2 câu. Việc sử dụng `SentenceChunker` giúp bảo toàn ngữ cảnh của các số liệu (như "tăng 20% ứng tuyển") đi kèm với nguyên nhân của nó trong cùng một khối, giúp Agent tránh được lỗi trích dẫn sai lệch khi tìm kiếm.
 
 **Code snippet (nếu custom):**
 ```python
